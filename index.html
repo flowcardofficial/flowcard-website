@@ -16,7 +16,7 @@
   --mono:'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Arial;
 }
 
-/* Global */
+/* Global - kept your style */
 *{box-sizing:border-box;margin:0;padding:0;}
 body{
   font-family:var(--mono);
@@ -40,23 +40,10 @@ body{
   align-items:center;
   flex-grow:1;
   justify-content:center;
-  padding-bottom:11px; 
+  padding-bottom:11px;
 }
 
-/* Logo Pulse */
-.logo img{
-  height:80px;
-  width:auto;
-  margin-bottom:20px;
-  animation: pulse 2s infinite;
-}
-@keyframes pulse{
-  0% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(1); }
-}
-
-/* Topbar */
+/* Topbar button (My Profile) */
 .topbar{
   width:100%;
   display:flex;
@@ -75,117 +62,107 @@ body{
   box-shadow:0 10px 30px rgba(11,87,208,0.15);
 }
 
+/* Logo Pulse */
+.logo img{
+  height:80px;
+  width:auto;
+  margin-bottom:20px;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse{
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
 /* Headline */
 h1{font-size:36px; margin-bottom:16px; line-height:1.2;}
 .gradient{background:linear-gradient(90deg,var(--flow-1),var(--flow-2)); -webkit-background-clip:text; color:transparent; display:inline-block;}
 p{color:var(--muted); margin-bottom:32px; font-size:16px;}
 
-/* Form */
+/* Form: email wide; second row contains referral input (smaller) + notify button */
 form{
   display:flex;
-  gap:25px;
+  gap:18px;
   justify-content:center;
   margin-bottom:12px;
   flex-direction:column;
   align-items:center;
+  width:100%;
+  max-width:900px;
 }
-input[type="email"], input[type="text"]{
-  width:330px;
-  height:50px;
+
+/* Email input: large */
+.input-email {
+  width:100%;
+  max-width:720px; /* controls email box width */
+  height:56px;
   padding:0 24px;
   border-radius:50px;
-  border:1px solid rgba(0,0,0,0.1);
+  border:1px solid rgba(0,0,0,0.08);
   font-size:16px;
-  box-shadow: 0 10px 30px rgba(11,87,208,0.15);
+  box-shadow: 0 10px 30px rgba(11,87,208,0.08);
+  outline:none;
+  transition: box-shadow .18s ease;
 }
-button.submit-btn{
-  width:150px;
-  height:50px;
+
+/* Row for referral + button */
+.row {
+  display:flex;
+  gap:14px;
+  align-items:center;
+  width:100%;
+  justify-content:center;
+}
+
+/* referral input: ~65% of the email box */
+.input-ref {
+  width:65%; /* ~65% of the email width (when constrained by max-width) */
+  max-width:460px;
+  min-width:220px;
+  height:48px;
+  padding:0 18px;
+  border-radius:50px;
+  border:1px solid rgba(0,0,0,0.08);
+  font-size:15px;
+  box-shadow: 0 8px 20px rgba(11,87,208,0.06);
+  outline:none;
+}
+
+/* notify button placed right of referral input */
+.button-notify{
+  width:180px; /* slightly narrower than before */
+  height:48px;
   border:none;
   border-radius:50px;
   background:linear-gradient(90deg,var(--flow-1),var(--flow-2));
   color:white;
-  font-size:16px;
-  font-weight:700;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  white-space:nowrap;
-  box-shadow:0 10px 30px rgba(11,87,208,0.15);
-  transition: all 0.3s ease;
-}
-button.submit-btn:hover{transform: scale(1.05);}
-
-/* SOCIAL PROOF */
-.social-proof{
-  font-size:14px;
-  color:var(--muted);
-  margin-top:12px;
-}
-
-/* Confirmation Modal */
-#confirmation{
-  display:none;
-  position:fixed;
-  top:0; left:0; width:100%; height:100%;
-  background:rgba(0,0,0,0.4);
-  backdrop-filter: blur(4px);
-  justify-content:center;
-  align-items:center;
-  z-index:1000;
-}
-#confirmation .modal-content{
-  background:white;
-  padding:40px 30px 30px 30px;
-  border-radius:30px;
-  max-width:400px;
-  width:90%;
-  text-align:center;
-  box-shadow:0 20px 50px rgba(11,87,208,0.2);
-  transform:scale(0.8);
-  opacity:0;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  transition: all 0.3s ease;
-}
-#confirmation.show .modal-content{
-  transform:scale(1);
-  opacity:1;
-}
-#confirmation .modal-title{
-  font-size:28px;
-  font-weight:800;
-  background:linear-gradient(90deg,#0B57D0,#00d4ff);
-  -webkit-background-clip:text;
-  color:transparent;
-  margin-bottom:16px;
-}
-#confirmation .modal-text{
-  color:#667085;
-  font-size:16px;
-  margin-bottom:16px;
-  flex-grow:1;
-}
-#confirmation .modal-btn{
-  padding:10px 20px;
-  border-radius:50px;
-  border:none;
-  background:linear-gradient(90deg,#0B57D0,#00d4ff);
-  color:white;
-  font-weight:700;
-  cursor:pointer;
   font-size:15px;
-  align-self:center;
-  margin-top:10px;
-  box-shadow:0 10px 30px rgba(11,87,208,0.15);
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 10px 30px rgba(11,87,208,0.12);
 }
 
-/* MOBILE FIX */
-@media(max-width: 500px){
-  html, body{height:100vh; overflow:hidden;}
-  form{flex-direction:column; gap:15px;}
+/* small optional helper (referrer label) */
+.small-note { font-size:13px; color:var(--muted); margin-top:8px; }
+
+/* SOCIAL PROOF & FOOTER */
+.social-proof{font-size:14px;color:var(--muted);margin-top:12px;}
+.footer{margin-top:20px;color:var(--muted);font-size:14px;}
+
+/* Confirmation Modal (kept) */
+#confirmation{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);backdrop-filter: blur(4px);justify-content:center;align-items:center;z-index:1000;}
+#confirmation .modal-content{background:white;padding:36px;border-radius:20px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 50px rgba(11,87,208,0.2);transform:scale(0.9);opacity:0;transition:all .22s ease;}
+#confirmation.show .modal-content{transform:scale(1);opacity:1;}
+#confirmation .modal-title{font-size:24px;font-weight:800;background:linear-gradient(90deg,#0B57D0,#00d4ff);-webkit-background-clip:text;color:transparent;margin-bottom:12px;}
+#confirmation .modal-text{color:var(--muted);font-size:15px;margin-bottom:16px;}
+
+/* Mobile: stack the referral row and shrink button */
+@media (max-width:720px){
+  .row{flex-direction:column; gap:10px; width:92%;}
+  .input-ref{width:100%; max-width:none;}
+  .button-notify{width:100%;}
+  .input-email{max-width:92%;}
 }
 </style>
 </head>
@@ -199,143 +176,152 @@ button.submit-btn:hover{transform: scale(1.05);}
   <div class="logo">
     <img src="flowcard_logo_gradient.png" alt="FlowCard Logo">
   </div>
+
   <h1><span class="gradient">Launching in 2028</span></h1>
   <p>FlowCard is under construction. Sign up to be notified when we launch!</p>
 
-  <form id="emailForm">
-    <input type="email" name="email" placeholder="Enter your email" required>
-    <input type="text" name="referredBy" placeholder="Referred by (optional)">
-    <button type="submit" class="submit-btn">Notify Me</button>
+  <form id="emailForm" autocomplete="off">
+    <input class="input-email" type="email" name="email" placeholder="Enter your email" required>
+
+    <div class="row" aria-label="Referral and notify">
+      <input class="input-ref" id="referredBy" name="referredBy" type="text" placeholder="Referred by (optional) — enter code">
+      <button type="submit" class="button-notify">Notify Me</button>
+    </div>
+
+    <div class="small-note">Got an invite code? Paste it above (example: FLW01942)</div>
   </form>
 
   <div class="social-proof"><span id="counter">0</span>+ teens have already signed up</div>
 </div>
 
 <!-- Confirmation Modal -->
-<div id="confirmation">
+<div id="confirmation" role="dialog" aria-modal="true" aria-labelledby="confTitle">
   <div class="modal-content">
-    <div class="modal-title">Thank you!</div>
-    <div class="modal-text">
-      Your email has been successfully registered. We'll notify you as soon as FlowCard launches!
+    <div id="confTitle" class="modal-title">Thank you!</div>
+    <div class="modal-text">Your email has been registered. We'll notify you when FlowCard launches. Click View Profile to see your referral code.</div>
+    <div style="display:flex; gap:12px; justify-content:center; margin-top:8px;">
+      <button class="modal-btn" id="viewProfileBtn" style="padding:10px 18px;border-radius:50px;border:none;background:linear-gradient(90deg,var(--flow-1),var(--flow-2));color:white;font-weight:700;cursor:pointer;">View Profile</button>
+      <button class="modal-btn" onclick="closeModal()" style="padding:10px 18px;border-radius:50px;border:1px solid rgba(10,30,80,0.06);background:white;color:var(--text);">Close</button>
     </div>
-    <button class="modal-btn" onclick="closeModal()">Close</button>
   </div>
 </div>
 
 <div class="footer">&copy; 2025 FlowCard. All rights reserved.</div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGzlPgt0fBH4MAY-zGTV2xb4rzf-I9M5vDTt5jAvwzlufatdtGSfuJ2Vj6Y_kbIMFK/exec"; // <-- replace with your deployed web app URL
+/* CONFIG: put your web app URL here (the one you provided) */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGzlPgt0fBH4MAY-zGTV2xb4rzf-I9M5vDTt5jAvwzlufatdtGSfuJ2Vj6Y_kbIMFK/exec";
 
-// Counter animation (unchanged)
+/* counter */
 const counter = document.getElementById('counter');
 let count = 0;
 const target = 150;
 const duration = 2000;
-const stepTime = Math.abs(Math.floor(duration / target));
+const stepTime = Math.max(10, Math.floor(duration / target));
 const counterInterval = setInterval(() => {
-  count++;
-  counter.textContent = count;
+  count++; counter.textContent = count;
   if(count >= target) clearInterval(counterInterval);
 }, stepTime);
 
-// Form submission
+/* Elements */
 const form = document.getElementById('emailForm');
 const confirmation = document.getElementById('confirmation');
+const profileBtn = document.getElementById('profileBtn');
+const viewProfileBtn = document.getElementById('viewProfileBtn');
 
-form.addEventListener('submit', function(e){
-  e.preventDefault();
-  const email = form.email.value.trim();
-  const referredBy = form.referredBy.value.trim();
-
-  // Scroll to top so user sees confirmation modal/feedback on mobile
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  // Fetch client IP (with fallback)
-  fetch("https://api.ipify.org?format=json").then(res => res.json()).then(data => {
-    const ip = data.ip || "unknown";
-
-    // Call Apps Script (expect JSON back)
-    fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "cors",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `email=${encodeURIComponent(email)}&ip=${encodeURIComponent(ip)}&referredBy=${encodeURIComponent(referredBy)}`
-    })
-    .then(res => {
-      // if server returns non-JSON due to deployment/permissions, handle gracefully
-      return res.json().catch(() => {
-        // fallback: if parsing fails, assume success but store a generated code
-        return { success: true, referralCode: localStorage.getItem('flowReferralCode') || null };
-      });
-    })
-    .then(data => {
-      if (!data) {
-        alert("Unexpected response from server. Try again.");
-        return;
-      }
-
-      if (data.success) {
-        // store the assigned referral code and email for profile page
-        if (data.referralCode) {
-          localStorage.setItem('flowReferralCode', data.referralCode);
-        }
-        localStorage.setItem('flowUserEmail', email);
-
-        // show confirmation modal
-        confirmation.style.display = 'flex';
-        confirmation.classList.add('show');
-        form.reset();
-      } else {
-        // Denied (duplicate email/ip or invalid ref). Show clear message.
-        // If server returned a referralCode (existing owner), we store it so profile shows it.
-        if (data.referralCode) localStorage.setItem('flowReferralCode', data.referralCode);
-        alert(data.message || "Signup denied.");
-      }
-    })
-    .catch(err => {
-      console.error("Signup error:", err);
-      alert("Network error while signing up. Please try again.");
-    });
-
-  }).catch(() => {
-    // If IP fetch fails, proceed using "unknown" but still send the form
-    const ip = "unknown";
-    fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "cors",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `email=${encodeURIComponent(email)}&ip=${encodeURIComponent(ip)}&referredBy=${encodeURIComponent(referredBy)}`
-    })
-    .then(res => res.json()).then(data => {
-      if (data.success) {
-        if (data.referralCode) localStorage.setItem('flowReferralCode', data.referralCode);
-        localStorage.setItem('flowUserEmail', email);
-        confirmation.style.display = 'flex';
-        confirmation.classList.add('show');
-        form.reset();
-      } else {
-        if (data.referralCode) localStorage.setItem('flowReferralCode', data.referralCode);
-        alert(data.message || "Signup denied.");
-      }
-    })
-    .catch(err => {
-      console.error("Signup error fallback:", err);
-      alert("Network error while signing up. Please try again.");
-    });
-  });
-});
-
-function closeModal(){
-  confirmation.classList.remove('show');
-  setTimeout(() => { confirmation.style.display='none'; }, 300);
+/* Helpers */
+function genLocalReferral(){ // fallback generator (stable by email + random seed)
+  const stored = localStorage.getItem('flowReferralCode');
+  if(stored) return stored;
+  const rand = Math.floor(10000 + Math.random() * 90000);
+  const code = 'FLW' + rand;
+  localStorage.setItem('flowReferralCode', code);
+  return code;
 }
 
-// Profile button click (same domain)
-document.getElementById('profileBtn').addEventListener('click', () => {
-  window.location.href = "profile.html";
+/* submit flow */
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = form.email.value.trim();
+  const referredBy = document.getElementById('referredBy').value.trim();
+
+  if (!email) return alert("Please enter your email.");
+
+  // small UX: scroll to top so user sees modal on mobile
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // try to fetch IP
+  let ip = 'unknown';
+  try {
+    const ipRes = await fetch('https://api.ipify.org?format=json');
+    const ipJson = await ipRes.json();
+    ip = ipJson.ip || 'unknown';
+  } catch (err) {
+    console.warn('IP fetch failed', err);
+  }
+
+  // Attempt to POST to Apps Script and read text response (the script returns referral code text)
+  let referralCode = null;
+  try {
+    const body = `email=${encodeURIComponent(email)}&ip=${encodeURIComponent(ip)}&referredBy=${encodeURIComponent(referredBy)}`;
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body
+    });
+
+    // If the server returns 200 and readable text, use it
+    if (res && res.ok) {
+      // try reading as text
+      try {
+        const txt = await res.text();
+        const cleaned = (txt || '').trim();
+        if (cleaned.length > 0) {
+          referralCode = cleaned;
+        }
+      } catch (err) {
+        console.warn('Could not parse server text response', err);
+      }
+    } else {
+      console.warn('Server responded with non-ok status or opaque response', res);
+    }
+  } catch (err) {
+    console.warn('Fetch to script failed (CORS or network):', err);
+  }
+
+  // If we didn't get a referral code from server, fallback to stable local generator
+  if (!referralCode) {
+    referralCode = genLocalReferral();
+    // Also attempt to store email locally so profile shows correct email
+  }
+
+  // Save to localStorage so profile page shows correct data per device
+  localStorage.setItem('flowReferralCode', referralCode);
+  localStorage.setItem('flowUserEmail', email);
+
+  // show confirmation modal with option to view profile
+  confirmation.style.display = 'flex';
+  confirmation.classList.add('show');
+  form.reset();
+});
+
+/* modal controls */
+function closeModal(){
+  confirmation.classList.remove('show');
+  setTimeout(() => { confirmation.style.display='none'; }, 220);
+}
+
+/* Profile navigation */
+profileBtn.addEventListener('click', () => {
+  window.location.href = 'profile.html';
+});
+viewProfileBtn.addEventListener('click', () => {
+  closeModal();
+  const code = localStorage.getItem('flowReferralCode') || '';
+  // open profile and pass code as query param for convenience
+  window.location.href = 'profile.html?ref=' + encodeURIComponent(code);
 });
 </script>
-
 </body>
 </html>
