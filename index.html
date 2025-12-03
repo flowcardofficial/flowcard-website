@@ -6,7 +6,6 @@
 <title>FlowCard — Coming Soon</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
 <style>
 :root{
   --bg:#f6fbff;
@@ -17,6 +16,7 @@
   --mono:'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Arial;
 }
 
+/* Global */
 *{box-sizing:border-box;margin:0;padding:0;}
 body{
   font-family:var(--mono);
@@ -25,12 +25,13 @@ body{
   display:flex;
   flex-direction:column;
   min-height:100vh;
-  justify-content:space-between;
+  justify-content:flex-start;
   align-items:center;
   text-align:center;
   padding:20px;
 }
 
+/* Container */
 .container{
   width: 100%;
   max-width: 1600px;
@@ -39,9 +40,10 @@ body{
   align-items:center;
   flex-grow:1;
   justify-content:center;
-  padding-bottom:11px;
+  padding-bottom:11px; 
 }
 
+/* Logo Pulse */
 .logo img{
   height:80px;
   width:auto;
@@ -54,19 +56,40 @@ body{
   100% { transform: scale(1); }
 }
 
+/* Topbar */
+.topbar{
+  width:100%;
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:20px;
+}
+.topbar button{
+  padding:10px 20px;
+  border:none;
+  border-radius:50px;
+  background:linear-gradient(90deg,var(--flow-1),var(--flow-2));
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+  font-size:14px;
+  box-shadow:0 10px 30px rgba(11,87,208,0.15);
+}
+
+/* Headline */
 h1{font-size:36px; margin-bottom:16px; line-height:1.2;}
 .gradient{background:linear-gradient(90deg,var(--flow-1),var(--flow-2)); -webkit-background-clip:text; color:transparent; display:inline-block;}
 p{color:var(--muted); margin-bottom:32px; font-size:16px;}
 
+/* Form */
 form{
   display:flex;
-  gap:25px;
+  gap:15px;
+  flex-direction:column;
   justify-content:center;
   margin-bottom:12px;
-  flex-wrap:nowrap;
   align-items:center;
 }
-input[type="email"]{
+input[type="email"], input[type="text"]{
   width:330px;
   height:50px;
   padding:0 24px;
@@ -75,7 +98,7 @@ input[type="email"]{
   font-size:16px;
   box-shadow: 0 10px 30px rgba(11,87,208,0.15);
 }
-button{
+button.submit-btn{
   width:150px;
   height:50px;
   border:none;
@@ -92,18 +115,13 @@ button{
   box-shadow:0 10px 30px rgba(11,87,208,0.15);
   transition: all 0.3s ease;
 }
-button:hover{transform: scale(1.05);}
+button.submit-btn:hover{transform: scale(1.05);}
 
+/* SOCIAL PROOF */
 .social-proof{
   font-size:14px;
   color:var(--muted);
   margin-top:12px;
-}
-
-.footer{
-  margin-top:20px;
-  color:var(--muted);
-  font-size:14px;
 }
 
 /* Confirmation Modal */
@@ -164,24 +182,18 @@ button:hover{transform: scale(1.05);}
   box-shadow:0 10px 30px rgba(11,87,208,0.15);
 }
 
-/* My Profile Button fixed top-right */
-#profileBtn{
-  position:fixed;
-  top:20px;
-  right:20px;
-  background:linear-gradient(90deg,var(--flow-1),var(--flow-2));
-  color:#fff;
-  padding:10px 16px;
-  border-radius:50px;
-  font-weight:700;
-  cursor:pointer;
-  z-index:1001;
+/* MOBILE FIX */
+@media(max-width: 500px){
+  html, body{height:100vh; overflow:hidden;}
+  form{flex-direction:column; gap:15px;}
 }
 </style>
 </head>
-
 <body>
-<button id="profileBtn">My Profile</button>
+
+<div class="topbar">
+  <button id="profileBtn">My Profile</button>
+</div>
 
 <div class="container">
   <div class="logo">
@@ -192,12 +204,14 @@ button:hover{transform: scale(1.05);}
 
   <form id="emailForm">
     <input type="email" name="email" placeholder="Enter your email" required>
-    <button type="submit">Notify Me</button>
+    <input type="text" name="referrer" placeholder="Enter referral code (optional)">
+    <button type="submit" class="submit-btn">Notify Me</button>
   </form>
 
   <div class="social-proof"><span id="counter">0</span>+ teens have already signed up</div>
 </div>
 
+<!-- Confirmation Modal -->
 <div id="confirmation">
   <div class="modal-content">
     <div class="modal-title">Thank you!</div>
@@ -208,9 +222,10 @@ button:hover{transform: scale(1.05);}
   </div>
 </div>
 
-<div class="footer">&copy; 2025 FlowCard. All rights reserved;</div>
+<div class="footer">&copy; 2025 FlowCard. All rights reserved.</div>
 
 <script>
+// Counter animation
 const counter = document.getElementById('counter');
 let count = 0;
 const target = 150;
@@ -219,53 +234,52 @@ const stepTime = Math.abs(Math.floor(duration / target));
 const counterInterval = setInterval(() => {
   count++;
   counter.textContent = count;
-  if(count >= target){
-    clearInterval(counterInterval);
-  }
+  if(count >= target) clearInterval(counterInterval);
 }, stepTime);
 
+// Form submission
 const form = document.getElementById('emailForm');
 const confirmation = document.getElementById('confirmation');
 
-const PROFILE_KEY = 'flowcardReferralCode';
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzytpoYjYxa6M4jtplYnHGk_ujuSsBvrV4tCroK0ecNupoC9EJUvhsAcUR2nQ9nUjRC/exec";
 
-// Show profile button click
-document.getElementById('profileBtn').addEventListener('click', () => {
-  const code = localStorage.getItem(PROFILE_KEY);
-  if(code){
-    alert(`Your FlowCard referral code: ${code}`);
-  } else {
-    alert("You haven't signed up yet!");
-  }
-});
-
-form.addEventListener('submit', async function(e){
+form.addEventListener('submit', function(e){
   e.preventDefault();
   const email = form.email.value;
+  const referrer = form.referrer.value || '';
+
+  // Fetch client IP
+  fetch("https://api.ipify.org?format=json")
+    .then(res => res.json())
+    .then(data => {
+      const ip = data.ip;
+
+      // Send to Google Sheets
+      fetch("https://script.google.com/macros/s/AKfycbxMR0lCU67Q12ae8kzP4EO0cIhr51Ba8HUOF0G6P2p9phqjr8pPrwJhgmCofoRGqF4G/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `email=${encodeURIComponent(email)}&ip=${encodeURIComponent(ip)}&referrer=${encodeURIComponent(referrer)}`
+      })
+      .then(() => {
+        // Store user info for profile page
+        localStorage.setItem('flowUserEmail', email);
+      });
+    });
+
   confirmation.style.display = 'flex';
   confirmation.classList.add('show');
   form.reset();
-
-  let referralCode = localStorage.getItem(PROFILE_KEY);
-
-  if(!referralCode){
-    // Send to Google Script and retrieve code
-    const params = new URLSearchParams({email, ip: 'unknown'});
-    try{
-      const resp = await fetch(`${SCRIPT_URL}?${params.toString()}`);
-      referralCode = await resp.text();
-      localStorage.setItem(PROFILE_KEY, referralCode);
-    }catch(err){
-      console.error("Failed to fetch referral code:", err);
-    }
-  }
 });
 
 function closeModal(){
   confirmation.classList.remove('show');
-  setTimeout(()=>{ confirmation.style.display='none'; },300);
+  setTimeout(() => { confirmation.style.display='none'; }, 300);
 }
+
+// Profile button click
+document.getElementById('profileBtn').addEventListener('click', () => {
+  window.location.href = "/profile.html"; // link to profile page
+});
 </script>
 
 </body>
