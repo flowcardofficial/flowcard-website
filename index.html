@@ -83,10 +83,10 @@ p{color:var(--muted); margin-bottom:32px; font-size:16px;}
 /* Form */
 form{
   display:flex;
-  gap:15px;
-  flex-direction:column;
+  gap:25px;
   justify-content:center;
   margin-bottom:12px;
+  flex-direction:column;
   align-items:center;
 }
 input[type="email"], input[type="text"]{
@@ -204,7 +204,7 @@ button.submit-btn:hover{transform: scale(1.05);}
 
   <form id="emailForm">
     <input type="email" name="email" placeholder="Enter your email" required>
-    <input type="text" name="referrer" placeholder="Enter referral code (optional)">
+    <input type="text" name="referredBy" placeholder="Referred by (optional)">
     <button type="submit" class="submit-btn">Notify Me</button>
   </form>
 
@@ -225,7 +225,9 @@ button.submit-btn:hover{transform: scale(1.05);}
 <div class="footer">&copy; 2025 FlowCard. All rights reserved.</div>
 
 <script>
-// Counter animation
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwCkYkBUJusW5lERl6_6o-rwJySQ1n5ifxTnhkag3t7GoBLfurlN-dWls73JNrOGLkc/exec"; // <-- replace with your deployed web app URL
+
+// Counter animation (unchanged)
 const counter = document.getElementById('counter');
 let count = 0;
 const target = 150;
@@ -241,34 +243,87 @@ const counterInterval = setInterval(() => {
 const form = document.getElementById('emailForm');
 const confirmation = document.getElementById('confirmation');
 
-
 form.addEventListener('submit', function(e){
   e.preventDefault();
-  const email = form.email.value;
-  const referrer = form.referrer.value || '';
+  const email = form.email.value.trim();
+  const referredBy = form.referredBy.value.trim();
 
-  // Fetch client IP
-  fetch("https://api.ipify.org?format=json")
-    .then(res => res.json())
-    .then(data => {
-      const ip = data.ip;
+  // Scroll to top so user sees confirmation modal/feedback on mobile
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      // Send to Google Sheets
-      fetch("https://script.google.com/macros/s/AKfycbxMR0lCU67Q12ae8kzP4EO0cIhr51Ba8HUOF0G6P2p9phqjr8pPrwJhgmCofoRGqF4G/exec", {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `email=${encodeURIComponent(email)}&ip=${encodeURIComponent(ip)}&referrer=${encodeURIComponent(referrer)}`
-      })
-      .then(() => {
-        // Store user info for profile page
-        localStorage.setItem('flowUserEmail', email);
+  // Fetch client IP (with fallback)
+  fetch("https://api.ipify.org?format=json").then(res => res.json()).then(data => {
+    const ip = data.ip || "unknown";
+
+    // Call Apps Script (expect JSON back)
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `email=${encodeURIComponent(email)}&ip=${encodeURIComponent(ip)}&referredBy=${encodeURIComponent(referredBy)}`
+    })
+    .then(res => {
+      // if server returns non-JSON due to deployment/permissions, handle gracefully
+      return res.json().catch(() => {
+        // fallback: if parsing fails, assume success but store a generated code
+        return { success: true, referralCode: localStorage.getItem('flowReferralCode') || null };
       });
+    })
+    .then(data => {
+      if (!data) {
+        alert("Unexpected response from server. Try again.");
+        return;
+      }
+
+      if (data.success) {
+        // store the assigned referral code and email for profile page
+        if (data.referralCode) {
+          localStorage.setItem('flowReferralCode', data.referralCode);
+        }
+        localStorage.setItem('flowUserEmail', email);
+
+        // show confirmation modal
+        confirmation.style.display = 'flex';
+        confirmation.classList.add('show');
+        form.reset();
+      } else {
+        // Denied (duplicate email/ip or invalid ref). Show clear message.
+        // If server returned a referralCode (existing owner), we store it so profile shows it.
+        if (data.referralCode) localStorage.setItem('flowReferralCode', data.referralCode);
+        alert(data.message || "Signup denied.");
+      }
+    })
+    .catch(err => {
+      console.error("Signup error:", err);
+      alert("Network error while signing up. Please try again.");
     });
 
-  confirmation.style.display = 'flex';
-  confirmation.classList.add('show');
-  form.reset();
+  }).catch(() => {
+    // If IP fetch fails, proceed using "unknown" but still send the form
+    const ip = "unknown";
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `email=${encodeURIComponent(email)}&ip=${encodeURIComponent(ip)}&referredBy=${encodeURIComponent(referredBy)}`
+    })
+    .then(res => res.json()).then(data => {
+      if (data.success) {
+        if (data.referralCode) localStorage.setItem('flowReferralCode', data.referralCode);
+        localStorage.setItem('flowUserEmail', email);
+        confirmation.style.display = 'flex';
+        confirmation.classList.add('show');
+        form.reset();
+      } else {
+        if (data.referralCode) localStorage.setItem('flowReferralCode', data.referralCode);
+        alert(data.message || "Signup denied.");
+      }
+    })
+    .catch(err => {
+      console.error("Signup error fallback:", err);
+      alert("Network error while signing up. Please try again.");
+    });
+  });
 });
 
 function closeModal(){
@@ -276,9 +331,9 @@ function closeModal(){
   setTimeout(() => { confirmation.style.display='none'; }, 300);
 }
 
-// Profile button click
+// Profile button click (same domain)
 document.getElementById('profileBtn').addEventListener('click', () => {
-  window.location.href = "/profile.html"; // link to profile page
+  window.location.href = "profile.html";
 });
 </script>
 
