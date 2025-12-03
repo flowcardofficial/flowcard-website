@@ -31,6 +31,25 @@ body{
   padding:20px;
 }
 
+/* Topbar */
+.topbar{
+  width:100%;
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:20px;
+}
+.topbar button{
+  padding:10px 20px;
+  border:none;
+  border-radius:50px;
+  background:linear-gradient(90deg,var(--flow-1),var(--flow-2));
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+  font-size:14px;
+  box-shadow:0 10px 30px rgba(11,87,208,0.15);
+}
+
 /* Container */
 .container{
   width: 100%;
@@ -56,34 +75,15 @@ body{
   100% { transform: scale(1); }
 }
 
-/* Topbar */
-.topbar{
-  width:100%;
-  display:flex;
-  justify-content:flex-end;
-  margin-bottom:20px;
-}
-.topbar button{
-  padding:10px 20px;
-  border:none;
-  border-radius:50px;
-  background:linear-gradient(90deg,var(--flow-1),var(--flow-2));
-  color:white;
-  font-weight:700;
-  cursor:pointer;
-  font-size:14px;
-  box-shadow:0 10px 30px rgba(11,87,208,0.15);
-}
-
 /* Headline */
 h1{font-size:36px; margin-bottom:16px; line-height:1.2;}
 .gradient{background:linear-gradient(90deg,var(--flow-1),var(--flow-2)); -webkit-background-clip:text; color:transparent; display:inline-block;}
 p{color:var(--muted); margin-bottom:32px; font-size:16px;}
 
-/* Form */
+/* Form vertical layout */
 form{
   display:flex;
-  flex-direction:column; /* stacked vertically */
+  flex-direction:column;
   gap:10px;
   justify-content:center;
   margin-bottom:12px;
@@ -117,20 +117,8 @@ button.submit-btn{
 }
 button.submit-btn:hover{transform: scale(1.05);}
 
-/* Invite Code Text */
-.invite-text{
-  color:var(--muted);
-  font-size:14px;
-  margin-top:12px;
-}
-.invite-text .example{
-  display:block;
-  font-size:13px;
-  margin-top:2px;
-}
-
-/* Confirmation & Processing Modals */
-#confirmation, #processing{
+/* Confirmation Modal */
+#confirmation{
   display:none;
   position:fixed;
   top:0; left:0; width:100%; height:100%;
@@ -140,7 +128,7 @@ button.submit-btn:hover{transform: scale(1.05);}
   align-items:center;
   z-index:1000;
 }
-.modal-content{
+#confirmation .modal-content{
   background:white;
   padding:40px 30px 30px 30px;
   border-radius:30px;
@@ -148,18 +136,11 @@ button.submit-btn:hover{transform: scale(1.05);}
   width:90%;
   text-align:center;
   box-shadow:0 20px 50px rgba(11,87,208,0.2);
-  transform:scale(0.8);
-  opacity:0;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  transition: all 0.3s ease;
 }
-.show .modal-content{
-  transform:scale(1);
-  opacity:1;
-}
-.modal-title{
+#confirmation .modal-title{
   font-size:28px;
   font-weight:800;
   background:linear-gradient(90deg,#0B57D0,#00d4ff);
@@ -167,13 +148,12 @@ button.submit-btn:hover{transform: scale(1.05);}
   color:transparent;
   margin-bottom:16px;
 }
-.modal-text{
+#confirmation .modal-text{
   color:#667085;
   font-size:16px;
   margin-bottom:16px;
-  flex-grow:1;
 }
-.modal-btn{
+#confirmation .modal-btn{
   padding:10px 20px;
   border-radius:50px;
   border:none;
@@ -182,44 +162,71 @@ button.submit-btn:hover{transform: scale(1.05);}
   font-weight:700;
   cursor:pointer;
   font-size:15px;
-  align-self:center;
   margin-top:10px;
   box-shadow:0 10px 30px rgba(11,87,208,0.15);
 }
 
-/* Processing modal with gradient text + jumping dots */
+/* Processing Modal */
+#processing{
+  display:none;
+  position:fixed;
+  top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  justify-content:center;
+  align-items:center;
+  z-index:1100;
+}
+#processing .modal-content{
+  background:white;
+  padding:30px 20px;
+  border-radius:30px;
+  max-width:320px;
+  width:90%;
+  text-align:center;
+  box-shadow:0 20px 50px rgba(11,87,208,0.2);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+}
+#processing .logo img{
+  width:100px;
+  height:auto;
+}
 .processing-text{
-  font-size:22px;
-  font-weight:700;
-  background:linear-gradient(90deg,var(--flow-1),var(--flow-2));
-  -webkit-background-clip:text;
-  color:transparent;
+  font-size:24px;
+  font-weight:800;
+  background: linear-gradient(90deg,#0B57D0,#00d4ff);
+  -webkit-background-clip: text;
+  color: transparent;
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:5px;
+  gap:4px;
 }
-.processing-dots{
-  display:flex;
-  gap:3px;
+.processing-text span{
+  display:inline-block;
+  animation: bounce 1.5s infinite;
 }
-.processing-dots span{
-  animation: jump 1s infinite;
-  font-size:24px;
-}
-.processing-dots span:nth-child(1){animation-delay:0s;}
-.processing-dots span:nth-child(2){animation-delay:0.2s;}
-.processing-dots span:nth-child(3){animation-delay:0.4s;}
-@keyframes jump{
-  0%,60%,100%{transform:translateY(0);}
-  30%{transform:translateY(-8px);}
+.processing-text span:nth-child(2){animation-delay:0.2s;}
+.processing-text span:nth-child(3){animation-delay:0.4s;}
+@keyframes bounce{
+  0%,20%,40%,60%,80%,100%{ transform: translateY(0); }
+  10%,30%,50%,70%,90%{ transform: translateY(-6px); }
 }
 
-/* MOBILE FIX */
-@media(max-width: 500px){
-  html, body{height:100vh; overflow:auto;}
-  form{gap:10px;}
-  .invite-text{text-align:center;}
+/* Footer */
+.footer{
+  margin-top:20px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* Mobile */
+@media(max-width:500px){
+  input[type="email"], input[type="text"]{width:90%;}
+  .processing-text{font-size:20px;}
 }
 </style>
 </head>
@@ -234,31 +241,22 @@ button.submit-btn:hover{transform: scale(1.05);}
     <img src="flowcard_logo_gradient.png" alt="FlowCard Logo">
   </div>
   <h1><span class="gradient">Launching in 2028</span></h1>
-  <p>Share your referral code with friends when we launch!</p>
+  <p>Share your referral code with friends!</p>
 
   <form id="emailForm">
     <input type="email" name="email" placeholder="Enter your email" required>
-    <input type="text" name="referralCode" placeholder="Referral Code (optional)">
+    <input type="text" name="referredBy" placeholder="Referral Code (optional)">
     <button type="submit" class="submit-btn">Notify Me</button>
   </form>
-
-  <div class="invite-text">
-    Got an invite code? Paste it above<br>
-    <span class="example">(example: FLW01942)</span>
-  </div>
 </div>
 
 <!-- Processing Modal -->
 <div id="processing">
   <div class="modal-content">
-    <div class="logo">
-      <img src="flowcard_logo_gradient.png" alt="FlowCard Logo" style="width:100px;margin-bottom:16px;">
-    </div>
+    <div class="logo"><img src="flowcard_logo_gradient.png" alt="FlowCard Logo"></div>
     <div class="processing-text">
       Processing
-      <div class="processing-dots">
-        <span>.</span><span>.</span><span>.</span>
-      </div>
+      <span>.</span><span>.</span><span>.</span>
     </div>
   </div>
 </div>
@@ -278,7 +276,6 @@ button.submit-btn:hover{transform: scale(1.05);}
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGzlPgt0fBH4MAY-zGTV2xb4rzf-I9M5vDTt5jAvwzlufatdtGSfuJ2Vj6Y_kbIMFK/exec";
-
 const form = document.getElementById('emailForm');
 const confirmation = document.getElementById('confirmation');
 const processing = document.getElementById('processing');
@@ -286,65 +283,54 @@ const processing = document.getElementById('processing');
 form.addEventListener('submit', function(e){
   e.preventDefault();
   const email = form.email.value.trim();
-  const referral = form.referralCode.value.trim();
+  const referredBy = form.referredBy.value.trim();
 
-  // Show processing modal immediately
-  processing.style.display='flex';
-  processing.classList.add('show');
+  // show processing modal immediately
+  processing.style.display = 'flex';
+  const startTime = Date.now();
 
-  fetch("https://api.ipify.org?format=json").then(res=>res.json()).then(data=>{
-    const ip = data.ip||'unknown';
+  fetch("https://api.ipify.org?format=json")
+    .then(res => res.json())
+    .then(data => {
+      const ip = data.ip || "unknown";
+      return fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `email=${encodeURIComponent(email)}&ip=${encodeURIComponent(ip)}&referredBy=${encodeURIComponent(referredBy)}`
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      const elapsed = Date.now() - startTime;
+      const wait = Math.max(3000 - elapsed,0);
 
-    fetch(SCRIPT_URL,{
-      method:'POST',
-      headers:{"Content-Type":"application/x-www-form-urlencoded"},
-      body:`email=${encodeURIComponent(email)}&ip=${encodeURIComponent(ip)}&referral=${encodeURIComponent(referral)}`
-    }).then(res=>res.json()).then(resData=>{
       setTimeout(()=>{
-        processing.classList.remove('show');
         processing.style.display='none';
-
-        if(resData.referralCode) localStorage.setItem('flowReferralCode', resData.referralCode);
-        if(resData.email) localStorage.setItem('flowUserEmail', resData.email||email);
-
-        confirmation.style.display='flex';
-        confirmation.classList.add('show');
-        form.reset();
-      },3000); // minimum 3 seconds
-    }).catch(()=>{
-      setTimeout(()=>{
-        processing.classList.remove('show');
-        processing.style.display='none';
-        localStorage.setItem('flowReferralCode','FLW00000');
-        localStorage.setItem('flowUserEmail',email);
-        confirmation.style.display='flex';
-        confirmation.classList.add('show');
-        form.reset();
-      },3000);
-    });
-
-  }).catch(()=>{
-    setTimeout(()=>{
-      processing.classList.remove('show');
+        if(data.success){
+          if(data.referralCode) localStorage.setItem('flowReferralCode', data.referralCode);
+          localStorage.setItem('flowUserEmail', email);
+          confirmation.style.display = 'flex';
+        } else {
+          if(data.referralCode) localStorage.setItem('flowReferralCode', data.referralCode);
+          alert(data.message || "Signup denied.");
+        }
+      },wait);
+    })
+    .catch(err=>{
+      console.error(err);
       processing.style.display='none';
-      localStorage.setItem('flowReferralCode','FLW00000');
-      localStorage.setItem('flowUserEmail',email);
-      confirmation.style.display='flex';
-      confirmation.classList.add('show');
-      form.reset();
-    },3000);
-  });
+      alert("Network error. Please try again.");
+    });
 });
 
 function closeModal(){
-  confirmation.classList.remove('show');
-  setTimeout(()=>{ confirmation.style.display='none'; },300);
+  confirmation.style.display='none';
 }
 
-document.getElementById('profileBtn').addEventListener('click', ()=>{
-  window.location.href="profile.html";
+document.getElementById('profileBtn').addEventListener('click', () => {
+  window.location.href = "profile.html";
 });
 </script>
-
 </body>
 </html>
