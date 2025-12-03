@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
+:root{
   --bg:#f6fbff;
   --card-bg:#ffffff;
   --text:#071133;
@@ -19,7 +19,6 @@
 }
 html,body{height:100%;margin:0;}
 body {
-  margin:0;
   font-family: var(--mono);
   background: var(--bg);
   color: var(--text);
@@ -34,7 +33,7 @@ body {
   background: var(--card-bg);
   border-radius:20px;
   padding:32px 22px;
-  max-width:520px;
+  max-width:420px;
   width:100%;
   box-shadow: var(--shadow);
   text-align:center;
@@ -43,9 +42,8 @@ body {
 .logo { margin-bottom:18px; }
 .logo img { width:140px; height:auto; display:block; margin:0 auto; }
 .ref-code {
-  font-size:48px;
+  font-size:44px;
   font-weight:800;
-  font-family:'Poppins', sans-serif;
   background:linear-gradient(90deg,var(--flow-1),var(--flow-2));
   -webkit-background-clip:text;
   color:transparent;
@@ -95,27 +93,19 @@ body {
 
   <div id="profile-heading" class="ref-code" aria-live="polite">FLW00000</div>
   <div class="email-display" id="userEmail">you@example.com</div>
-  <div class="note">Share your referral code with friends to climb the waitlist.</div>
+  <div class="note">Share your referral code with friends!</div>
   <button class="btn-back" id="backBtn">&#8592; Back</button>
 </div>
 
 <script>
-// Read localStorage set by index.html
-const savedCode = localStorage.getItem('flowReferralCode') || '';
-const savedEmail = localStorage.getItem('flowUserEmail') || '';
-
-// If nothing saved, attempt to call the Apps Script to get a code (best-effort).
-// But avoid auto-creating one here — index should create the code. We only display stored values.
-const displayCode = savedCode && savedCode !== 'null' ? savedCode : 'FLW00000';
-const displayEmail = savedEmail && savedEmail !== 'null' ? savedEmail : 'you@example.com';
-
-document.getElementById('profile-heading').textContent = displayCode;
-document.getElementById('userEmail').textContent = displayEmail;
-
-// back button
+const savedCode = localStorage.getItem('flowReferralCode') || 'FLW00000';
+const savedEmail = localStorage.getItem('flowUserEmail') || 'you@example.com';
+document.getElementById('profile-heading').textContent = savedCode;
+document.getElementById('userEmail').textContent = savedEmail;
 document.getElementById('backBtn').addEventListener('click', () => {
   window.location.href = 'index.html';
 });
 </script>
+
 </body>
 </html>
