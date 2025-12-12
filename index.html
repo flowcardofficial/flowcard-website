@@ -71,7 +71,7 @@ h1{font-size:36px;margin-bottom:16px;line-height:1.2;}
 p{color:var(--muted);margin-bottom:24px;font-size:16px;max-width:760px;}
 .form-row{width:100%;display:flex;gap:10px;align-items:center;justify-content:center;margin-bottom:8px;}
 input[type="email"], #referralBox{
-flex:0 1 60%;
+flex:1;
 min-width:220px;
 height:50px;
 padding:0 20px;
@@ -82,7 +82,8 @@ box-shadow:0 10px 30px rgba(11,87,208,0.08);
 }
 #referralBox{display:none;}
 button.submit-btn{
-width:160px;
+width:auto;
+min-width:140px;
 height:50px;
 border:none;
 border-radius:50px;
@@ -108,7 +109,12 @@ button.submit-btn:hover{transform:scale(1.02);} button.submit-btn:active{transfo
 .dot:nth-child(2){animation-delay:150ms;} .dot:nth-child(3){animation-delay:300ms;} 
 @keyframes jump{0%{transform:translateY(0);}40%{transform:translateY(-10px);}80%{transform:translateY(0);}100%{transform:translateY(0);}}
 .footer{margin-top:20px;color:var(--muted);font-size:14px;}
-@media(max-width:700px){.form-row{flex-direction:column;} input,#referralBox,button.submit-btn{width:100%;}}
+
+/* Responsive improvements */
+@media(max-width:700px){
+.form-row{flex-direction:column; gap:10px;}
+input[type="email"], #referralBox, button.submit-btn{width:100%; min-width:0;}
+}
 </style>
 </head>
 <body>
@@ -118,7 +124,7 @@ button.submit-btn:hover{transform:scale(1.02);} button.submit-btn:active{transfo
 <h1><span class="gradient">Launching Soon</span></h1>
 <p>FlowCard is under construction. Sign up to be notified when we launch!</p>
 <form id="emailForm" autocomplete="off" class="form">
-<div class="form-row" style="flex-direction:row; gap:10px; justify-content:center;">
+<div class="form-row" style="flex-wrap:wrap; gap:10px; justify-content:center;">
 <input type="email" name="email" placeholder="Enter your email" required>
 <button type="submit" class="submit-btn">Notify Me</button>
 </div>
@@ -154,9 +160,7 @@ const MIN_PROCESSING_MS = 3000;
 const form = document.getElementById('emailForm');
 const hasReferral = document.getElementById('hasReferral');
 const referralBox = document.getElementById('referralBox');
-hasReferral.addEventListener('change', ()=>{
-referralBox.style.display = hasReferral.checked ? 'block' : 'none';
-});
+hasReferral.addEventListener('change', ()=>{referralBox.style.display = hasReferral.checked ? 'block' : 'none';});
 form.addEventListener('submit', async e => {
 e.preventDefault();
 const email = form.email.value.trim();
