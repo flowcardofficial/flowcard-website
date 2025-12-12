@@ -107,8 +107,6 @@ button.submit-btn:hover{transform:scale(1.02);} button.submit-btn:active{transfo
 .dot:nth-child(2){animation-delay:150ms;} .dot:nth-child(3){animation-delay:300ms;} 
 @keyframes jump{0%{transform:translateY(0);}40%{transform:translateY(-10px);}80%{transform:translateY(0);}100%{transform:translateY(0);}}
 .footer{margin-top:20px;color:var(--muted);font-size:14px;}
-
-/* Responsive improvements */
 @media(max-width:700px){
 .form-row{flex-direction:column;gap:10px;}
 input[type="email"], #referralBox, button.submit-btn{
@@ -150,8 +148,11 @@ height:50px;
 <div id="confirmation">
 <div class="modal-card">
 <div class="modal-title" id="confirmTitle">Thank you!</div>
-<div class="modal-text" id="confirmText"></div>
+<div class="modal-text" id="confirmText">Your email has been registered. We'll notify you when FlowCard launches.</div>
+<div style="display:flex; gap:10px; justify-content:center; margin-top:6px;">
+<a id="viewProfile" href="profile.html" style="text-decoration:none; padding:10px 20px; border-radius:999px; background:linear-gradient(90deg,var(--flow-1),var(--flow-2)); color:#fff; font-weight:700;">View my profile</a>
 <button onclick="closeConfirmation()" class="modal-btn">Close</button>
+</div>
 </div>
 </div>
 <div class="footer">© 2025 FlowCard. All rights reserved.</div>
@@ -183,8 +184,8 @@ const elapsed = Date.now() - start;
 await new Promise(res=>setTimeout(res,Math.max(0,MIN_PROCESSING_MS-elapsed)));
 hideProcessing();
 if(!serverData){confirmTitle.textContent="Network error";confirmText.textContent="Please try again.";showConfirmation();return;}
-confirmTitle.textContent = serverData.success===false ? "Error" : "Thank you!";
-confirmText.textContent = serverData.success===false ? serverData.error : `You're on the list.`;
+confirmTitle.textContent = serverData.success===false ? "You're already registered" : "Thank you!";
+confirmText.textContent = serverData.success===false && serverData.referralCode ? `Your referral code is ${serverData.referralCode}.` : `You're on the list. Your referral code: ${serverData.referralCode}.`;
 showConfirmation();
 form.reset();referralBox.style.display='none';
 });
